@@ -16,7 +16,12 @@ while True:
 
         # Scarica il video con yt-dlp
         subprocess.run(
-            ["yt-dlp", "--cookies", "cookies.txt", "-f", "mp4", "-o", filename, link]
+            ["yt-dlp",
+ "--cookies", "cookies.txt",
+ "-f", "bv*+ba/b",
+ "--merge-output-format", "mp4",
+ "-o", filename,
+ link]
         )
 
         # Controlla se il download è avvenuto
