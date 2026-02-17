@@ -31,7 +31,7 @@ while True:
             "-c:a", "aac",
             "-b:a", "160k",
             "-f", "flv",
-            f"rtmp://a.rtmp.youtube.com/live2/{q155-8c7t-u5de-2adx-6d1s}"
+            f"rtmp://a.rtmp.youtube.com/live2/q155-8c7t-u5de-2adx-6d1s"
         ])
         
         # Cancella il file temporaneo
