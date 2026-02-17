@@ -1,6 +1,8 @@
 import subprocess
 import time
+import os
 
+# Chiave live di YouTube già inserita
 STREAM_KEY = "q155-8c7t-u5de-2adx-6d1s"
 
 # Leggi i link da links.txt
@@ -9,15 +11,22 @@ with open("links.txt", "r") as f:
 
 while True:
     for link in links:
-        print(f"Streaming video: {link}")
-        
-        # Scarica temporaneamente il video
+        print(f"Scaricando video: {link}")
         filename = "temp.mp4"
-        subprocess.run([
-            "yt-dlp", "-f", "mp4", "-o", filename, link
-        ])
-        
-        # Se il download ha avuto successo
+
+        # Scarica il video con yt-dlp
+        subprocess.run(
+            ["yt-dlp", "-f", "mp4", "-o", filename, link]
+        )
+
+        # Controlla se il download è avvenuto
+        if not os.path.exists(filename):
+            print("Errore: video non scaricato, salto questo link")
+            continue
+
+        print(f"Streaming video: {filename}")
+
+        # Avvia FFmpeg per lo streaming con logo overlay
         subprocess.run([
             "ffmpeg",
             "-re",
@@ -33,11 +42,10 @@ while True:
             "-f", "flv",
             f"rtmp://a.rtmp.youtube.com/live2/q155-8c7t-u5de-2adx-6d1s"
         ])
-        
+
         # Cancella il file temporaneo
-        subprocess.run(["rm", "-f", filename])
-        
-    # Ripeti la playlist all’infinito
-    time.sleep(5)
-    # Attesa 5 secondi prima di scaricare di nuovo
+        if os.path.exists(filename):
+            os.remove(filename)
+
+    # Loop infinito della playlist
     time.sleep(5)
