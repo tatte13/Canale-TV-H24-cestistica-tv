@@ -5,7 +5,7 @@ import time
 # Crea cartella videos
 os.makedirs("videos", exist_ok=True)
 
-STREAM_KEY = "INSERISCI_LA_TUA_STREAM_KEY"
+STREAM_KEY = "q155-8c7t-u5de-2adx-6d1s"
 
 while True:
     # Scarica tutti i video YouTube da links.txt
