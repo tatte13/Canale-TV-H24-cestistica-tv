@@ -1,13 +1,16 @@
 FROM python:3.11-slim
 
+# Installa ffmpeg e curl
 RUN apt-get update && apt-get install -y ffmpeg curl
 
+# Installa yt-dlp
 RUN pip install --upgrade pip yt-dlp
 
+# Imposta la working directory
 WORKDIR /app
 
-# Copia TUTTI i file nel container
+# Copia tutti i file nel container
 COPY . .
 
-# Comando principale
+# Avvia lo script principale
 CMD ["python3", "app.py"]
