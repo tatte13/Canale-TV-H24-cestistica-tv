@@ -6,6 +6,8 @@ RUN pip install --upgrade pip yt-dlp
 
 WORKDIR /app
 
+# Copia TUTTI i file nel container
 COPY . .
 
+# Comando principale
 CMD ["python3", "app.py"]
