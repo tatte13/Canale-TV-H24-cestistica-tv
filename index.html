@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CESTISTICA TV 24 - LIVE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
+        #player-container { position: relative; width: 100%; height: 100%; }
+        iframe { width: 100%; height: 100%; border: none; pointer-events: none; }
+        #logo { position: absolute; pointer-events: none; z-index: 10; transition: all 0.5s; }
+        #overlay-info { position: absolute; top: 20px; left: 20px; color: white; background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="player-container">
+        <div id="overlay-info">LIVE BROADCAST</div>
+        <div id="player"></div>
+        <img id="logo" src="https://i.imgur.com/uI6O7Kx.png" style="top:5%; left:85%; width:15%; opacity:1; display:block">
+    </div>
+    <script>
+        const playlist = [];
+        const overlay = {"enabled":true,"logoUrl":"https://i.imgur.com/uI6O7Kx.png","opacity":1,"size":15,"x":85,"y":5};
+        
+        function updatePlayer() {
+            if (playlist.length === 0) return;
+            const totalDuration = playlist.reduce((acc, v) => acc + v.duration, 0);
+            const now = Math.floor(Date.now() / 1000);
+            const cyclePos = now % totalDuration;
+            
+            let accumulated = 0;
+            let current = playlist[0];
+            let seek = 0;
+            
+            for (let i = 0; i < playlist.length; i++) {
+                if (cyclePos < accumulated + playlist[i].duration) {
+                    current = playlist[i];
+                    seek = cyclePos - accumulated;
+                    break;
+                }
+                accumulated += playlist[i].duration;
+            }
+            
+            const videoId = current.url.split('v=')[1]?.split('&')[0] || current.url.split('/').pop();
+            const url = "https://www.youtube.com/embed/" + videoId + "?autoplay=1&mute=1&controls=0&start=" + seek + "&modestbranding=1&rel=0";
+            
+            const playerDiv = document.getElementById('player');
+            playerDiv.innerHTML = '<iframe src="' + url + '" allow="autoplay; encrypted-media"></iframe>';
+        }
+
+        updatePlayer();
+        setInterval(updatePlayer, 30000); // Ricarica ogni 30s per restare in sync
+    </script>
+</body>
+</html>
